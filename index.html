@@ -39,12 +39,12 @@
 
   <div class="w-full max-w-5xl text-center mb-8">
     <h1 class="text-4xl font-bold text-cyan-400">Accessibility Aid</h1>
-    <p class="text-gray-400 mt-2">Emotion detection + speech assistance for non-verbal users.</p>
+    <p class="text-gray-400 mt-2">Emotion detection with speech feedback.</p>
   </div>
 
   <main class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8">
 
-    <!-- Video Feed + Emotion -->
+    <!-- Video Feed -->
     <div id="video-container" class="bg-gray-900 p-6 rounded-2xl shadow-lg border-2 border-gray-700">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-2xl font-semibold text-gray-300">Live Camera Feed</h2>
@@ -56,25 +56,14 @@
       <video id="webcam" autoplay playsinline muted></video>
     </div>
 
-    <!-- Status + Speech Tool -->
-    <div id="status-panel" class="bg-gray-900 p-6 rounded-2xl shadow-lg border-2 border-gray-700 flex flex-col justify-between">
-      <div class="flex flex-col items-center border-b-2 border-gray-700 pb-6">
-        <h2 class="text-2xl font-semibold text-gray-300 mb-4">Current Emotional State</h2>
-        <div id="emotion-icon" class="icon">😐</div>
-        <p id="emotion-text" class="text-xl mt-4 font-medium text-gray-300">Neutral</p>
-      </div>
-
-      <div class="pt-6">
-        <h2 class="text-2xl font-semibold text-gray-300 mb-4">Quick Speech</h2>
-        <textarea id="speech-input" rows="2" class="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:outline-none focus:border-cyan-400" placeholder="Type something to speak..."></textarea>
-        <button onclick="speakText()" class="mt-3 w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 rounded-lg">🔊 Speak</button>
-        <div class="grid grid-cols-2 gap-2 mt-4">
-          <button onclick="quickSpeak('I need help')" class="bg-red-500 hover:bg-red-600 py-2 rounded-lg font-semibold">I need help</button>
-          <button onclick="quickSpeak('Yes')" class="bg-green-500 hover:bg-green-600 py-2 rounded-lg font-semibold">Yes</button>
-          <button onclick="quickSpeak('No')" class="bg-yellow-500 hover:bg-yellow-600 py-2 rounded-lg font-semibold">No</button>
-          <button onclick="quickSpeak('Thank you')" class="bg-blue-500 hover:bg-blue-600 py-2 rounded-lg font-semibold">Thank you</button>
-        </div>
-      </div>
+    <!-- Emotional State -->
+    <div id="status-panel" class="bg-gray-900 p-6 rounded-2xl shadow-lg border-2 border-gray-700 flex flex-col items-center justify-center">
+      <h2 class="text-2xl font-semibold text-gray-300 mb-4">Current Emotional State</h2>
+      <div id="emotion-icon" class="icon">😐</div>
+      <p id="emotion-text" class="text-xl mt-4 font-medium text-gray-300">Neutral</p>
+      <button onclick="speakEmotion()" class="mt-6 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 px-6 rounded-lg">
+        🔊 Read Emotion
+      </button>
     </div>
   </main>
 
@@ -171,18 +160,13 @@
       videoContainer.style.borderColor = panelBorderColor;
     }
 
-    // --- Speech Feature ---
-    function speakText() {
-      const text = document.getElementById('speech-input').value.trim();
+    // --- Speak Emotion ---
+    function speakEmotion() {
+      const text = emotionText.textContent.trim();
       if (text) {
-        const utterance = new SpeechSynthesisUtterance(text);
+        const utterance = new SpeechSynthesisUtterance("Current emotional state: " + text);
         speechSynthesis.speak(utterance);
       }
-    }
-
-    function quickSpeak(text) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      speechSynthesis.speak(utterance);
     }
 
     // --- Main Execution ---
